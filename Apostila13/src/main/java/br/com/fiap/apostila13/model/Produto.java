@@ -14,6 +14,13 @@ public class Produto {
                 + " R$" + valor + " em estoque: " + (temEstoque?"sim":"não");
     }
 
+    public Produto(String nome, String descricao, double valor, boolean temEstoque) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.temEstoque = temEstoque;
+    }
+
     //Construtores (com todos atributos e vazio)
     public Produto() {
     }

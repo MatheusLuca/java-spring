@@ -27,15 +27,20 @@ public class ProdutoDao {
         PreparedStatement stmt = conexao
                 .prepareStatement("insert into t_jdbc_produto (cd_produto, " +
                         "nm_produto, ds_produto, vl_produto, st_estoque) " +
-                        "values (?, ?, ?, ?, ?)");
+                        "values (sq_t_jdbc_produto.nextval, ?, ?, ?, ?)", new String[]{"cd_produto"});
         //Setar os paramentros no comando SQL
-        stmt.setInt(1, produto.getCodigo());
-        stmt.setString(2, produto.getNome());
-        stmt.setString(3, produto.getDescricao());
-        stmt.setDouble(4, produto.getValor());
-        stmt.setBoolean(5, produto.isTemEstoque());
+        stmt.setString(1, produto.getNome());
+        stmt.setString(2, produto.getDescricao());
+        stmt.setDouble(3, produto.getValor());
+        stmt.setBoolean(4, produto.isTemEstoque());
         //Executar o comando SQL no banco
         stmt.executeUpdate();
+        //Recuperar o id gerado
+        ResultSet resultSet = stmt.getGeneratedKeys();
+        if (resultSet.next()){
+            int codigo = resultSet.getInt(1);
+            produto.setCodigo(codigo);
+        }
     }
 
     public Produto buscar(int id) throws SQLException, EntidadeNaoEncontradaException {
@@ -50,6 +55,10 @@ public class ProdutoDao {
         if (!resultSet.next()){
             throw new EntidadeNaoEncontradaException("Produto não encontrado");
         }
+        return getProduto(resultSet);
+    }
+
+    private static Produto getProduto(ResultSet resultSet) throws SQLException {
         //Recuperar as informações do ResulSet (codigo, nome, descrição, valor, estoque)
         int codigo = resultSet.getInt("cd_produto");
         String nome = resultSet.getString("nm_produto");
@@ -70,14 +79,7 @@ public class ProdutoDao {
         List<Produto> lista = new ArrayList<>();
         //Percorer todos os registros encontrados
         while (resultSet.next()) {
-            //Recuperar os dados das colunas
-            int codigo = resultSet.getInt("cd_produto");
-            String nome = resultSet.getString("nm_produto");
-            String descricao = resultSet.getString("ds_produto");
-            double valor = resultSet.getDouble("vl_produto");
-            boolean temEstoque = resultSet.getBoolean("st_estoque");
-            //Criar o produto com os dados e adicionar na lista
-            lista.add(new Produto(codigo, nome, descricao, valor, temEstoque));
+            lista.add(getProduto(resultSet));
         }
         //Retornar a lista
         return lista;
@@ -110,4 +112,9 @@ public class ProdutoDao {
         if (linhas == 0)
             throw new EntidadeNaoEncontradaException("Produto não encontrado");
     }
+
+    public List<Produto> buscarPorPrecoMaior(double preco){
+        return null;
+    }
+
 }

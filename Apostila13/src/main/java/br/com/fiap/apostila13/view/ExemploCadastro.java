@@ -11,9 +11,6 @@ public class ExemploCadastro {
         //Ler os dados do produto
         Scanner leitor = new Scanner(System.in);
         try {
-            System.out.println("Digite o código");
-            int codigo = leitor.nextInt();
-
             System.out.println("Digite o nome");
             String nome = leitor.next() + leitor.nextLine();
 
@@ -27,7 +24,7 @@ public class ExemploCadastro {
             boolean estoque = leitor.nextBoolean();
 
             //Instanciar um Produto com os dados
-            Produto produto = new Produto(codigo, nome, descricao, valor, estoque);
+            Produto produto = new Produto(nome, descricao, valor, estoque);
 
             //Instanciar um ProdutoDao
             ProdutoDao dao = new ProdutoDao();
@@ -35,6 +32,7 @@ public class ExemploCadastro {
             //Chamar o método de cadastro
             dao.cadastrar(produto);
             System.out.println("Produto cadastrado!");
+            System.out.println(produto);
 
         } catch(Exception e){
             System.err.println("Erro: " + e.getMessage());
