@@ -113,8 +113,16 @@ public class ProdutoDao {
             throw new EntidadeNaoEncontradaException("Produto não encontrado");
     }
 
-    public List<Produto> buscarPorPrecoMaior(double preco){
-        return null;
+    public List<Produto> buscarPorPrecoMaior(double preco) throws SQLException {
+        PreparedStatement stmt = conexao.prepareStatement("select * from t_jdbc_produto where vl_produto > ?");
+        stmt.setDouble(1, preco);
+        ResultSet resultSet = stmt.executeQuery();
+        List<Produto> lista = new ArrayList<>();
+        while (resultSet.next())
+            lista.add(getProduto(resultSet));
+        return lista;
     }
 
 }
+
+
