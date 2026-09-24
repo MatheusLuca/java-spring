@@ -7,12 +7,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class ImovelDao {
 
     private final DataSource dataSource;
     private static final String INSERT_SQL = "insert into t_api_imovel (cd_imovel, ds_imovel, nr_dimensao, vl_imovel) values (sq_t_api_imovel.nextval,?,?,?)";
+    private static final String LISTAR_SQL = "select * from t_api_imovel";
+
 
     public ImovelDao(DataSource dataSource){
         this.dataSource = dataSource;
@@ -31,5 +35,7 @@ public class ImovelDao {
                 imovel.setCodigo(resultSet.getInt(1));
         }
     }
+
+
 
 }

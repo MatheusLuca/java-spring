@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("imoveis")
@@ -25,11 +26,6 @@ public class ImovelController {
         this.dao = dao;
     }
 
-    @GetMapping
-    public String dizerOla(){
-        return "Churros de chocolate";
-    }
-
     @PostMapping
     public ResponseEntity<Imovel>adicionar(@RequestBody Imovel imovel, UriComponentsBuilder uriBuilder) throws SQLException {
 
@@ -38,11 +34,12 @@ public class ImovelController {
         URI uri = uriBuilder.path("/imoveis/{id}").buildAndExpand(imovel.getCodigo()).toUri();
 
         return ResponseEntity.created(uri).body(imovel);
-
-
-
     }
 
+    @GetMapping
+    public List<Imovel> listar() throws SQLException{
+        return dao.listar();
+    }
 
 
 }
