@@ -20,7 +20,8 @@ public class ImovelDao {
 
     public void cadastrar(Imovel imovel) throws SQLException {
         try (Connection conexao = dataSource.getConnection();
-             PreparedStatement stmt = conexao.prepareStatement(INSERT_SQL, new String[]{"cd_imovel"})){
+             PreparedStatement stmt = conexao.prepareStatement(INSERT_SQL, new String[]{"cd_imovel"}))
+        {
              stmt.setString(1, imovel.getDescricao());
              stmt.setDouble(2, imovel.getMetros());
              stmt.setDouble(3, imovel.getValor());
